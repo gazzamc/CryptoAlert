@@ -11,7 +11,8 @@ autopep8 = "*"
 django = "*"
 djangorestframework = "*"
 django-rest-knox = "*"
-python-dotenv = "*"
+django-dotenv = "*"
+pylint-django = "*"
 
 [requires]
 python_version = "3.8"

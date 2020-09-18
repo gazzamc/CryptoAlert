@@ -1,6 +1,7 @@
-from django.contrib import admin
-from django.urls import path, include
+from rest_framework import routers
+from .api import AlertViewSet
 
-urlpatterns = [
-    path('', include('alert.urls')),
-]
+router = routers.DefaultRouter()
+router.register('api/alerts', AlertViewSet, 'alerts')
+
+urlpatterns = router.urls

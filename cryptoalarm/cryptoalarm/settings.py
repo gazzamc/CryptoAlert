@@ -41,6 +41,7 @@ INSTALLED_APPS = [
 
     'alert',
     'rest_framework',
+    'frontend',
 ]
 
 MIDDLEWARE = [
