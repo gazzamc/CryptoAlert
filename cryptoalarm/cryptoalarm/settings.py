@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'frontend',
     'knox',
     'accounts',
+    'currencies',
 ]
 
 REST_FRAMEWORK = {
