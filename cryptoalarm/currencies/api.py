@@ -1,4 +1,4 @@
-from rest_framework import viewsets, permissions
+from rest_framework import viewsets
 from .models import Fiat, Crypto, Exchange
 from .serializers import FiatSerializer, CryptoSerializer, ExchangeSerializer
 from .utils.permissions import IsAdminOrReadOnly

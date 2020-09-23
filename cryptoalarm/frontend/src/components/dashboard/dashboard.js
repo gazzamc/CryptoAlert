@@ -36,6 +36,84 @@ class Dashboard extends Component {
     }
 
     render() {
+        const profileDetails = (
+            <Fragment>
+                <table className='table table-borderless table-responsive'>
+                    <tbody>
+                        <tr>
+                            <td>Username</td>
+                            <td>{this.state.username}</td>
+                        </tr>
+                        <tr>
+                            <td>Email</td>
+                            <td>{this.state.email}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <button className='btn btn-info mr-2'>Update</button>
+                <button className='btn btn-danger'>Delete</button>
+            </Fragment>
+        );
+
+        const alerts = (
+            <Fragment>
+                <table className='table table-striped'>
+                    <tbody>
+                        <tr>
+                            <td>BTC</td>
+                            <td>Mark</td>
+                            <td>
+                                <a href=''>Edit</a>
+                            </td>
+                            <td>
+                                <a href=''>Delete</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Jacob</td>
+                            <td>Thornton</td>
+                            <td>
+                                <a href=''>Edit</a>
+                            </td>
+                            <td>
+                                <a href=''>Delete</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Larry</td>
+                            <td>the Bird</td>
+                            <td>
+                                <a href=''>Edit</a>
+                            </td>
+                            <td>
+                                <a href=''>Delete</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Larry</td>
+                            <td>the Bird</td>
+                            <td>
+                                <a href=''>Edit</a>
+                            </td>
+                            <td>
+                                <a href=''>Delete</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Larry</td>
+                            <td>the Bird</td>
+                            <td>
+                                <a href=''>Edit</a>
+                            </td>
+                            <td>
+                                <a href=''>Delete</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </Fragment>
+        );
+
         return (
             <Fragment>
                 <div className='col-sm-12 wrapper'>
@@ -110,81 +188,24 @@ class Dashboard extends Component {
                     <div className='card exchange col-sm-9 offset-sm-1 mt-5'>
                         <h5 className='card-header'>Profile Details</h5>
                         <div className='card-body'>
-                            <table className='table table-borderless table-responsive'>
-                                <tbody>
-                                    <tr>
-                                        <td>Username</td>
-                                        <td>{this.state.username}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Email</td>
-                                        <td>{this.state.email}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <button className='btn btn-info mr-2'>
-                                Update
-                            </button>
-                            <button className='btn btn-danger'>Delete</button>
+                            {this.props.isAuth ? (
+                                profileDetails
+                            ) : (
+                                <p className='m-3'>
+                                    Login to view profile details
+                                </p>
+                            )}
                         </div>
                     </div>
                     <div className='card exchange col-sm-9 offset-sm-1 mt-5'>
                         <h5 className='card-header'>Alerts</h5>
                         <div className='card-body table-responsive'>
-                            <table className='table table-striped'>
-                                <tbody>
-                                    <tr>
-                                        <td>BTC</td>
-                                        <td>Mark</td>
-                                        <td>
-                                            <a href=''>Edit</a>
-                                        </td>
-                                        <td>
-                                            <a href=''>Delete</a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Jacob</td>
-                                        <td>Thornton</td>
-                                        <td>
-                                            <a href=''>Edit</a>
-                                        </td>
-                                        <td>
-                                            <a href=''>Delete</a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Larry</td>
-                                        <td>the Bird</td>
-                                        <td>
-                                            <a href=''>Edit</a>
-                                        </td>
-                                        <td>
-                                            <a href=''>Delete</a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Larry</td>
-                                        <td>the Bird</td>
-                                        <td>
-                                            <a href=''>Edit</a>
-                                        </td>
-                                        <td>
-                                            <a href=''>Delete</a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Larry</td>
-                                        <td>the Bird</td>
-                                        <td>
-                                            <a href=''>Edit</a>
-                                        </td>
-                                        <td>
-                                            <a href=''>Delete</a>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                            {' '}
+                            {this.props.isAuth ? (
+                                alerts
+                            ) : (
+                                <p className='m-3'>Login to view alerts</p>
+                            )}
                         </div>
                     </div>
                 </div>

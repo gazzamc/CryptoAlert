@@ -2,12 +2,10 @@ from alert.models import Alert
 from rest_framework import viewsets, permissions
 from .serializers import AlertSerializer
 
-# Alert Viewset
-
 
 class AlertViewSet(viewsets.ModelViewSet):
-    queryset = Alert.objects.all()
-    permissions_classes = [
-        permissions.AllowAny
-    ]
+    permission_classes = (permissions.IsAuthenticated,)
     serializer_class = AlertSerializer
+
+    def get_queryset(self):
+        return Alert.objects.filter(user_id=self.request.user.id)
