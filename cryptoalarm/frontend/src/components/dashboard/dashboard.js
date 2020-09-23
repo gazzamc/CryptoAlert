@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react';
+import Exchange from './exchange.js';
 
 class Dashboard extends Component {
     constructor() {
@@ -6,10 +7,11 @@ class Dashboard extends Component {
         this.state = {
             username: null,
             email: null,
+            lastUpdated: null,
         };
     }
 
-    updateDetails() {
+    updateDetails = () => {
         if (this.state.username !== this.props.username) {
             this.setState({
                 username: this.props.username,
@@ -25,7 +27,11 @@ class Dashboard extends Component {
                 'welcome'
             ).innerHTML = `welcome back, ${this.state.username}!`;
         }
-    }
+    };
+
+    lastUpdate = (time) => {
+        this.setState({ lastUpdated: time });
+    };
 
     componentDidMount() {
         this.updateDetails();
@@ -133,42 +139,13 @@ class Dashboard extends Component {
                     </div>
                     <div className='card exchange mt-5'>
                         <h5 className='card-header'>
-                            Exchanges
-                            <span className='float-sm-right text-muted refresh-date'>
-                                Updated: 0 mins ago
+                            Exchange{' '}
+                            <span className='text-muted time ml-auto'>
+                                Last Updated: {this.state.lastUpdated}
                             </span>
                         </h5>
-                        <div className='card-body table-responsive'>
-                            <table className='table table-striped'>
-                                <thead className='thead-dark'>
-                                    <tr>
-                                        <th scope='col'></th>
-                                        <th scope='col'>USD</th>
-                                        <th scope='col'>EUR</th>
-                                        <th scope='col'>GBP</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>BTC</td>
-                                        <td>211</td>
-                                        <td>543</td>
-                                        <td>645</td>
-                                    </tr>
-                                    <tr>
-                                        <td>LTC</td>
-                                        <td>211</td>
-                                        <td>543</td>
-                                        <td>645</td>
-                                    </tr>
-                                    <tr>
-                                        <td>BLK</td>
-                                        <td>211</td>
-                                        <td>543</td>
-                                        <td>645</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                        <div className='card-body'>
+                            <Exchange lastUpdated={this.lastUpdate} />
                         </div>
                     </div>
                 </div>

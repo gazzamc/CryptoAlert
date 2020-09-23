@@ -24,10 +24,10 @@ class CryptoViewSet(viewsets.ModelViewSet):
 
 class ExchangeFilters(filters.FilterSet):
     crypto = django_filters.CharFilter(
-        field_name="crypto_id__name", lookup_expr='exact')
+        field_name="crypto_id__name", lookup_expr='iexact')
 
     fiat = django_filters.CharFilter(
-        field_name="fiat_id__name", lookup_expr='exact')
+        field_name="fiat_id__name", lookup_expr='iexact')
 
     ex_pair = django_filters.CharFilter(
         field_name="name", lookup_expr='iexact')

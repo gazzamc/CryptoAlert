@@ -1,5 +1,8 @@
-.exchange {
-    padding: 0;
+.time {
+    position: relative;
+    float: right;
+    font-size: xx-small;
+    text-align: right;
 }
 
 .wrapper {
