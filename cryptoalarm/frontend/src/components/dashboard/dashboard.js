@@ -151,33 +151,21 @@ class Dashboard extends Component {
                                 <tbody>
                                     <tr>
                                         <td>BTC</td>
-                                        <td>Mark</td>
-                                        <td>Otto</td>
-                                        <td>@mdo</td>
+                                        <td>211</td>
+                                        <td>543</td>
+                                        <td>645</td>
                                     </tr>
                                     <tr>
-                                        <td>Jacob</td>
-                                        <td>Thornton</td>
-                                        <td>@fat</td>
-                                        <td>@mdo</td>
+                                        <td>LTC</td>
+                                        <td>211</td>
+                                        <td>543</td>
+                                        <td>645</td>
                                     </tr>
                                     <tr>
-                                        <td>Larry</td>
-                                        <td>the Bird</td>
-                                        <td>@twitter</td>
-                                        <td>@mdo</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Larry</td>
-                                        <td>the Bird</td>
-                                        <td>@twitter</td>
-                                        <td>@mdo</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Larry</td>
-                                        <td>the Bird</td>
-                                        <td>@twitter</td>
-                                        <td>@mdo</td>
+                                        <td>BLK</td>
+                                        <td>211</td>
+                                        <td>543</td>
+                                        <td>645</td>
                                     </tr>
                                 </tbody>
                             </table>
