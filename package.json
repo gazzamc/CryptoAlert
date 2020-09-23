@@ -20,16 +20,22 @@
     "homepage": "https://github.com/gazzamc/CryptoAlert#readme",
     "devDependencies": {
         "@babel/core": "^7.11.6",
+        "@babel/plugin-transform-runtime": "^7.11.5",
         "@babel/preset-env": "^7.11.5",
         "@babel/preset-react": "^7.10.4",
+        "axios": "^0.20.0",
         "babel-loader": "^8.1.0",
         "babel-plugin-transform-class-properties": "^6.24.1",
+        "css-loader": "^4.3.0",
+        "style-loader": "^1.2.1",
         "webpack": "^4.44.2",
         "webpack-cli": "^3.3.12"
     },
     "dependencies": {
+        "@babel/runtime-corejs3": "^7.11.2",
         "prop-types": "^15.7.2",
         "react": "^16.13.1",
-        "react-dom": "^16.13.1"
+        "react-dom": "^16.13.1",
+        "react-router-dom": "^5.2.0"
     }
 }
