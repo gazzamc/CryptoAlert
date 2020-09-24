@@ -14,11 +14,11 @@ class Exchange(models.Model):
     fiat_id = models.ForeignKey(Fiat, on_delete=models.CASCADE)
     crypto_id = models.ForeignKey(Crypto, on_delete=models.CASCADE)
     rate = models.FloatField(null=False)
-    date_modified = models.DateTimeField(auto_now_add=True)
+    date_modified = models.DateTimeField(auto_now=True)
 
 
 class CoinHistory(models.Model):
     fiat_id = models.ForeignKey(Fiat, on_delete=models.CASCADE)
     crypto_id = models.ForeignKey(Crypto, on_delete=models.CASCADE)
-    value = models.FloatField(null=False)
+    rate = models.FloatField(null=False)
     date_added = models.DateTimeField(auto_now_add=True)

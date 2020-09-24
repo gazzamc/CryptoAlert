@@ -15,6 +15,14 @@ class Login extends Component {
         };
     }
 
+    componentDidMount() {
+        this.props.updateAuth();
+    }
+
+    redirectToHome = () => {
+        this.setState({ redirect: '/' });
+    };
+
     redirectToReg = (e) => {
         e.preventDefault();
         this.setState({ redirect: '/register' });
@@ -57,7 +65,7 @@ class Login extends Component {
                 this.state.result.user.username,
                 this.state.result.user.email
             );
-            this.setState({ redirect: '/' });
+            this.redirectToHome();
         } else {
             this.setState({
                 errorMsg: 'Incorrect login details or user does not exist',
@@ -72,7 +80,7 @@ class Login extends Component {
 
         return (
             <div className='col-sm-4 wrapper'>
-                <div className='card exchange col-sm-12 mt-5'>
+                <div className='card exchange col-sm-12 mt-5 p-0'>
                     <h5 className='card-header'>Login</h5>
                     <div className='card-body'>
                         <form className='mb-3'>

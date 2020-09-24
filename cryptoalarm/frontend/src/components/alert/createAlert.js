@@ -1,23 +1,89 @@
 import React, { Component, Fragment } from 'react';
-import { Link } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
+import { callAPI } from './../../api/api';
 
-class Header extends Component {
-    setOptions = (event) => {
+class CreatAlert extends Component {
+    constructor() {
+        super();
+        this.state = {
+            fiatOps: [],
+            coinOps: [],
+            redirect: null,
+            status: null,
+        };
+    }
+
+    componentDidMount() {
+        this.getFiat();
+        this.getCoins();
+    }
+
+    getFiat = async () => {
+        let path = '/api/fiat';
+        await callAPI((res) => {
+            let temp = [];
+            res.data.map((fiat) => {
+                temp.push([fiat.pk, fiat.name]);
+            });
+            this.setState({ fiatOps: temp });
+        }, path);
+    };
+
+    getCoins = async () => {
+        let path = '/api/crypto';
+
+        await callAPI((res) => {
+            let temp = [];
+            res.data.map((coin) => {
+                temp.push([coin.pk, coin.name]);
+            });
+
+            this.setState({ coinOps: temp });
+        }, path);
+    };
+
+    setOptions = () => {
         document.getElementById('perc-options').toggleAttribute('hidden');
         document.getElementById('price-options').toggleAttribute('hidden');
     };
 
-    create = () => {
-        logoutUser(this.state.token);
+    create = (e) => {
+        e.preventDefault();
+
+        // Get all details
+        const body = JSON.stringify({ username, password });
     };
 
-    cancel = () => {};
+    cancel = (e) => {
+        e.preventDefault();
+        this.setState({ redirect: '/' });
+    };
 
     render() {
+        const fiat = this.state.fiatOps.map(([id, name]) => {
+            return (
+                <option value={id} key={id}>
+                    {name}
+                </option>
+            );
+        });
+
+        const coins = this.state.coinOps.map(([id, name]) => {
+            return (
+                <option value={id} key={id}>
+                    {name}
+                </option>
+            );
+        });
+
+        if (this.state.redirect) {
+            return <Redirect to={this.state.redirect} />;
+        }
+
         return (
             <Fragment>
                 <div className='col-sm-4 wrapper'>
-                    <div className='card exchange col-sm-12 mt-5'>
+                    <div className='card exchange col-sm-12 mt-5 p-0'>
                         <h5 className='card-header'>Create Alert</h5>
                         <div className='card-body'>
                             <form>
@@ -28,8 +94,7 @@ class Header extends Component {
                                     <select
                                         className='form-control'
                                         id='FormControlSelectCrypto'>
-                                        <option>BTC</option>
-                                        <option>LTC</option>
+                                        {coins}
                                     </select>
                                 </div>
                                 <div className='form-group'>
@@ -39,8 +104,7 @@ class Header extends Component {
                                     <select
                                         className='form-control'
                                         id='FormControlSelectFiat'>
-                                        <option>USD</option>
-                                        <option>EUR</option>
+                                        {fiat}
                                     </select>
                                 </div>
                                 <div className='form-group'>
@@ -51,8 +115,10 @@ class Header extends Component {
                                         className='form-control'
                                         id='FormControlSelectType'
                                         onChange={this.setOptions}>
-                                        <option>Price Change</option>
-                                        <option>Percentage Change</option>
+                                        <option value='1'>Price Change</option>
+                                        <option value='2'>
+                                            Percentage Change
+                                        </option>
                                     </select>
                                 </div>
                                 {/* Options for price */}
@@ -128,11 +194,12 @@ class Header extends Component {
                                 <div className='col-sm-12 mt-5 mb-5'></div>
                                 <button
                                     type='submit'
-                                    className='btn btn-success'>
+                                    className='btn btn-success mr-2'>
                                     Create
                                 </button>
                                 <button
                                     type='submit'
+                                    onClick={this.cancel}
                                     className='btn btn-danger'>
                                     Cancel
                                 </button>
@@ -145,4 +212,4 @@ class Header extends Component {
     }
 }
 
-export default Header;
+export default CreatAlert;

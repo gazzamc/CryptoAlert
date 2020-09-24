@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import Header from './header/header';
 import Login from './accounts/Login';
 import Register from './accounts/Register';
-import Alert from './alert/alert';
+import Alert from './alert/createAlert';
 import Dashboard from './dashboard/dashboard';
 import { getUser } from '../api/auth';
 import './App.css';
@@ -34,6 +34,7 @@ class App extends Component {
             if (this.state.status === 200) {
                 this.setState({
                     username: this.state.result.username,
+                    email: this.state.result.email,
                     isAuth: true,
                 });
             } else {
@@ -60,9 +61,6 @@ class App extends Component {
     };
 
     updateAuth = (bool, user, email) => {
-        console.log(bool);
-        console.log(user);
-        console.log(email);
         this.setState({
             isAuth: bool,
             username: user,
@@ -89,6 +87,7 @@ class App extends Component {
                                             username={this.state.username}
                                             email={this.state.email}
                                             isAuth={this.state.isAuth}
+                                            updateAuth={this.updateAuth}
                                             {...props}
                                         />
                                     )}

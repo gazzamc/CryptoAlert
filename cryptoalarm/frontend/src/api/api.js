@@ -1,6 +1,8 @@
 import axios from 'axios';
+import { configToken } from './auth';
 
-export const callAPI = async (callback, path) => {
+export const callAPI = async (callback, path, token) => {
+    const config = configToken(token);
     await axios
         .get(path)
         .then((response) =>
@@ -11,7 +13,7 @@ export const callAPI = async (callback, path) => {
         )
         .catch((error) =>
             callback({
-                status: error.response.status,
+                status: error.status,
             })
         );
 };

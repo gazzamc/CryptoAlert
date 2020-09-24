@@ -1,15 +1,17 @@
 from rest_framework import serializers
-from .models import Alert
+from django.contrib.auth.models import User
+from .models import Alert, AlertType
+
+
+class AlertTypeSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = AlertType
+        fields = ('pk', 'name')
 
 
 class AlertSerializer(serializers.ModelSerializer):
-    username = serializers.CharField(source='user_id.username')
-    crypto_name = serializers.CharField(source='crypto_id.name')
-    fiat_name = serializers.CharField(source='fiat_id.name')
-    alert_type_name = serializers.CharField(source='alert_type.name')
-
     class Meta:
         model = Alert
-        fields = ('id', 'username', 'fiat_name',
-                  'crypto_name', 'alert_type_name', 'desired_price',
-                  'perc_change', 'is_above', 'date_created')
+        fields = ('pk', 'user_id', 'fiat_id', 'crypto_id', 'alert_type', 'desired_price',
+                  'perc_change', 'is_above', 'date_created', 'date_modified')

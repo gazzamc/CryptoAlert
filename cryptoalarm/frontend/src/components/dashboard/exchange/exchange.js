@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { callAPI } from '../../api/getExchange';
+import { callAPI } from '../../../api/api';
 import ReactTable from 'react-table-v6';
 import 'react-table-v6/react-table.css';
 
@@ -11,6 +11,7 @@ class Exchange extends Component {
             rows: [],
             status: null,
             lastModDate: null,
+            lastUpdated: null,
         };
     }
 
@@ -78,11 +79,16 @@ class Exchange extends Component {
                     dict = {};
                 }
             });
+
             if (this.state.status === 200) {
                 this.setState({ rows: arr, lastModDate: date });
                 this.getTimeDiff();
             }
         }, path);
+    };
+
+    lastUpdate = (time) => {
+        this.setState({ lastUpdated: time });
     };
 
     getTimeDiff = () => {
@@ -102,7 +108,7 @@ class Exchange extends Component {
             timeDiff = `${Math.floor(diff / 3600)} hrs ago`;
         }
 
-        this.props.lastUpdated(timeDiff);
+        this.lastUpdate(timeDiff);
     };
 
     componentDidMount() {
@@ -113,12 +119,24 @@ class Exchange extends Component {
 
     render() {
         return (
-            <ReactTable
-                data={this.state.rows}
-                columns={this.state.columns}
-                defaultPageSize={3}
-                showPagination={false}
-            />
+            <Fragment>
+                <div className='card exchange mt-5'>
+                    <h5 className='card-header'>
+                        Exchange{' '}
+                        <span className='text-muted time ml-auto'>
+                            Last Updated: {this.state.lastUpdated}
+                        </span>
+                    </h5>
+                    <div className='card-body'>
+                        <ReactTable
+                            data={this.state.rows}
+                            columns={this.state.columns}
+                            defaultPageSize={3}
+                            showPagination={false}
+                        />
+                    </div>
+                </div>
+            </Fragment>
         );
     }
 }

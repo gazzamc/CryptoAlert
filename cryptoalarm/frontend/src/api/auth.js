@@ -91,6 +91,41 @@ export const getUser = async (callback, token) => {
         );
 };
 
+// Delete User Details
+export const deleteUser = async (callback, token) => {
+    const config = configToken(token);
+    await axios
+        .delete('/api/auth/user', config)
+        .then((response) =>
+            callback({
+                status: response.status,
+            })
+        )
+        .catch((error) =>
+            callback({
+                status: error.response.status,
+            })
+        );
+};
+
+// Create Alert
+export const createAlert = async (callback, token, body) => {
+    const config = configToken(token);
+
+    await axios
+        .post('/api/alert', '', config, body)
+        .then((response) =>
+            callback({
+                status: response.status,
+            })
+        )
+        .catch((error) =>
+            callback({
+                status: error.response.status,
+            })
+        );
+};
+
 export const configToken = (token) => {
     // Headers
     const config = {

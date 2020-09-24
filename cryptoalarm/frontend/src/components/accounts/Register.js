@@ -17,6 +17,10 @@ class Register extends Component {
         };
     }
 
+    redirectToHome = () => {
+        this.setState({ redirect: '/' });
+    };
+
     redirectToLogin = (e) => {
         e.preventDefault();
         this.setState({ redirect: '/login' });
@@ -86,7 +90,7 @@ class Register extends Component {
                 this.state.result.user.username,
                 this.state.result.user.email
             );
-            this.setState({ redirect: '/' });
+            this.redirectToHome();
         } else {
             for (const key in this.state.result.data) {
                 this.setState({ errorMsg: this.state.result.data[key][0] });
@@ -105,7 +109,7 @@ class Register extends Component {
 
         return (
             <div className='col-sm-4 wrapper'>
-                <div className='card exchange col-sm-12 mt-5'>
+                <div className='card exchange col-sm-12 mt-5 p-0'>
                     <h5 className='card-header'>Register</h5>
                     <div className='card-body'>
                         <form className='mb-4'>
