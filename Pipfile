@@ -13,6 +13,9 @@ djangorestframework = "*"
 django-rest-knox = "*"
 django-dotenv = "*"
 pylint-django = "*"
+django-filter = "*"
+requests = "*"
+django-extensions = "*"
 
 [requires]
 python_version = "3.8"
