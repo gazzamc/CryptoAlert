@@ -7,13 +7,10 @@ For more information on this file, see
 https://docs.djangoproject.com/en/3.1/howto/deployment/wsgi/
 """
 
-import os
-import dotenv
 from django.core.wsgi import get_wsgi_application
-
-dotenv.read_dotenv(os.path.join(
-    os.path.dirname(os.path.dirname(__file__)), '..\.env'))
-
+import os
+from dotenv import load_dotenv
+load_dotenv()
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'cryptoalarm.settings')
 
 application = get_wsgi_application()

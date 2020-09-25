@@ -12,7 +12,7 @@ class Alert(models.Model):
     fiat_id = models.ForeignKey(Fiat, on_delete=models.CASCADE)
     crypto_id = models.ForeignKey(Crypto, on_delete=models.CASCADE)
     alert_type = models.ForeignKey(AlertType, on_delete=models.CASCADE)
-    desired_price = models.FloatField(null=True, blank=True)
+    price = models.FloatField(null=True, blank=True)
     is_above = models.BooleanField(default=False)
     perc_change = models.FloatField(null=True, blank=True)
     interval = models.IntegerField(null=True, blank=True)
