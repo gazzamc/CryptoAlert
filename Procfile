@@ -1,0 +1,1 @@
+web: gunicorn cryptoalarm.wsgi --log-file - --log-level debug
