@@ -1,8 +1,7 @@
 import axios from 'axios';
 import { configToken } from './auth';
 
-export const callAPI = async (callback, path, token) => {
-    const config = configToken(token);
+export const callAPI = async (callback, path) => {
     await axios
         .get(path)
         .then((response) =>

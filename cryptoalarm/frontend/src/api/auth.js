@@ -108,12 +108,111 @@ export const deleteUser = async (callback, token) => {
         );
 };
 
+// Edit User Details
+export const editUser = async (callback, token, username, email) => {
+    const config = configToken(token);
+    const body = JSON.stringify({ username, email });
+
+    await axios
+        .put('/api/auth/user', body, config)
+        .then((response) =>
+            callback({
+                data: response,
+                error: response.error,
+                status: response.status,
+            })
+        )
+        .catch((error) =>
+            callback({
+                error: error.response,
+                status: error.response.status,
+            })
+        );
+};
+
+// Get Alerts
+export const getAlerts = async (callback, token) => {
+    const config = configToken(token);
+
+    await axios
+        .get('/api/alert', config)
+        .then((response) =>
+            callback({
+                data: response.data,
+                status: response.status,
+            })
+        )
+        .catch((error) =>
+            callback({
+                status: error.response.status,
+            })
+        );
+};
+
+// single
+export const getAlert = async (callback, path, token) => {
+    const config = configToken(token);
+
+    await axios
+        .get(path, config)
+        .then((response) =>
+            callback({
+                data: response.data,
+                status: response.status,
+            })
+        )
+        .catch((error) =>
+            callback({
+                status: error.response.status,
+            })
+        );
+};
+
 // Create Alert
 export const createAlert = async (callback, token, body) => {
     const config = configToken(token);
 
     await axios
-        .post('/api/alert', '', config, body)
+        .post('/api/alert/', body, config)
+        .then((response) =>
+            callback({
+                data: response,
+                status: response.status,
+            })
+        )
+        .catch((error) =>
+            callback({
+                data: error.response.data,
+                status: error.response.status,
+            })
+        );
+};
+
+export const editAlert = async (callback, token, body, id) => {
+    const config = configToken(token);
+
+    await axios
+        .put(`/api/alert/${id}/`, body, config)
+        .then((response) =>
+            callback({
+                data: response,
+                status: response.status,
+            })
+        )
+        .catch((error) =>
+            callback({
+                data: error,
+                status: error.response.status,
+            })
+        );
+};
+
+// delete Alert
+export const deleteAlert = async (callback, token, id) => {
+    const config = configToken(token);
+
+    await axios
+        .delete(`/api/alert/${id}/`, config)
         .then((response) =>
             callback({
                 status: response.status,

@@ -6,6 +6,7 @@ class Login extends Component {
     constructor() {
         super();
         this.state = {
+            user_id: 'test',
             username: '',
             password: '',
             errorMsg: '',
@@ -55,15 +56,16 @@ class Login extends Component {
 
         if (this.state.status === 200) {
             // Store user details in local storage
+            localStorage.setItem('user_id', this.state.result.user.pk);
             localStorage.setItem('token', this.state.result.token);
             localStorage.setItem('isAuth', true);
             localStorage.setItem('email', this.state.result.user.email);
-            localStorage.setItem('username', this.state.result.user.username);
 
             this.props.updateAuth(
                 true,
                 this.state.result.user.username,
-                this.state.result.user.email
+                this.state.result.user.email,
+                this.state.result.user.pk
             );
             this.redirectToHome();
         } else {

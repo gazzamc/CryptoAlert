@@ -7,6 +7,7 @@ class Register extends Component {
     constructor() {
         super();
         this.state = {
+            user_id: null,
             username: '',
             password: '',
             email: '',
@@ -75,7 +76,8 @@ class Register extends Component {
                 }),
             this.state.username,
             this.state.password,
-            this.state.email
+            this.state.email,
+            this.state.user_id
         );
 
         if (this.state.status === 200) {
@@ -83,12 +85,13 @@ class Register extends Component {
             localStorage.setItem('token', this.state.result.token);
             localStorage.setItem('isAuth', true);
             localStorage.setItem('email', this.state.result.user.email);
-            localStorage.setItem('username', this.state.result.user.username);
+            localStorage.setItem('user_id', this.state.result.user.pk);
 
             this.props.updateAuth(
                 true,
                 this.state.result.user.username,
-                this.state.result.user.email
+                this.state.result.user.email,
+                this.state.result.user.pk
             );
             this.redirectToHome();
         } else {

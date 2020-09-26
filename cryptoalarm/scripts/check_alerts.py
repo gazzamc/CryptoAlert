@@ -2,9 +2,9 @@ import datetime
 import dateutil.parser
 import pytz
 from django.db.models.functions import Now
+from django.core.mail import send_mail
 from currencies.models import Exchange
 from alert.models import Alert
-from django.core.mail import send_mail
 from cryptoalarm.settings import EMAIL_HOST_USER, EMAIL_HOST_PASSWORD
 
 TITLE = "{0} is {1} {2} - Crypto Alarm"
@@ -28,20 +28,17 @@ def check_alerts():
         for alert in alerts:
             if (exchange['crypto_id__name'] == alert['crypto_id__name'] and
                     exchange['fiat_id__name'] == alert['fiat_id__name']):
-                # check alert time
                 if alert['alert_type__name'] == "price":
                     # determine if price is above or below then
                     # check
                     if alert['is_above']:
                         if alert['price'] >= exchange['rate']:
-                            print("above")
                             send_email(alert['user_id__email'],
                                        TITLE.format(exchange['crypto_id__name'],
                                                     "Above", "{0:0.2f} {1}".format(alert['price'], alert['fiat_id__name'])),
                                        MESSAGE_PRICE)
                     else:
                         if alert['price'] <= exchange['rate']:
-                            print("below")
                             send_email(alert['user_id__email'],
                                        TITLE.format(exchange['crypto_id__name'],
                                                     "Below", "{0:0.2f} {1}".format(alert['price'], alert['fiat_id__name'])),
@@ -61,17 +58,21 @@ def check_alerts():
                         Alert.objects.filter(pk=alert['pk']).update(
                             date_modified=Now())
                     else:
-                        perc_change = (
-                            (exchange['rate'] - alert['price']) / alert['price']) * 100
 
-                        if perc_change >= alert['perc_change']:
-                            send_email(alert['user_id__email'],
-                                       TITLE.format(exchange['crypto_id__name'],
-                                                    "Up", "{0:0.1f}%".format(perc_change)),
-                                       MESSAGE_PRICE)
+                        # Check if price is not none type
+                        if(alert['price'] is not None):
+                            perc_change = (
+                                (exchange['rate'] - alert['price']) / alert['price']) * 100
 
-    # if valid get user data
-    # send email
+                            if perc_change >= alert['perc_change']:
+                                send_email(alert['user_id__email'],
+                                           TITLE.format(exchange['crypto_id__name'],
+                                                        "Up", "{0:0.1f}%".format(perc_change)),
+                                           MESSAGE_PRICE)
+                        else:
+                            # Update that record with current rate
+                            Alert.objects.filter(pk=alert['pk']).update(
+                                price=exchange['rate'])
 
 
 def send_email(email, title, msg):

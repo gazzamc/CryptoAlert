@@ -4,7 +4,8 @@ import ReactDOM from 'react-dom';
 import Header from './header/header';
 import Login from './accounts/Login';
 import Register from './accounts/Register';
-import Alert from './alert/createAlert';
+import CreatAlert from './alert/createAlert';
+import EditAlert from './alert/editAlert';
 import Dashboard from './dashboard/dashboard';
 import { getUser } from '../api/auth';
 import './App.css';
@@ -12,6 +13,7 @@ import './App.css';
 class App extends Component {
     state = {
         username: null,
+        user_id: null,
         email: null,
         isAuth: false,
         result: {},
@@ -34,6 +36,7 @@ class App extends Component {
             if (this.state.status === 200) {
                 this.setState({
                     username: this.state.result.username,
+                    user_id: this.state.result.pk,
                     email: this.state.result.email,
                     isAuth: true,
                 });
@@ -52,19 +55,21 @@ class App extends Component {
             isAuth: false,
             username: null,
             email: null,
+            user_id: null,
         });
 
         localStorage.setItem('token', null);
         localStorage.setItem('isAuth', false);
         localStorage.setItem('email', null);
-        localStorage.setItem('username', null);
+        localStorage.setItem('user_id', null);
     };
 
-    updateAuth = (bool, user, email) => {
+    updateAuth = (bool, user, email, pk) => {
         this.setState({
             isAuth: bool,
             username: user,
             email: email,
+            user_id: pk,
         });
     };
 
@@ -112,7 +117,16 @@ class App extends Component {
                                         />
                                     )}
                                 />
-                                <Route exact path='/alert' component={Alert} />
+                                <Route
+                                    exact
+                                    path='/alert'
+                                    component={CreatAlert}
+                                />
+                                <Route
+                                    exact
+                                    path='/alert/edit/:userId'
+                                    component={EditAlert}
+                                />
                             </Switch>
                         </div>
                     </div>

@@ -35,7 +35,10 @@ class Dashboard extends Component {
                     </div>
                 </div>
                 <div className='col-sm-8 offset-sm-1 wrapper'>
-                    <Overview isAuth={this.props.isAuth} />
+                    <Overview
+                        isAuth={this.props.isAuth}
+                        updateAuth={this.props.updateAuth}
+                    />
                     <Exchange />
                 </div>
                 <div className='col-sm-4 wrapper'>
@@ -45,7 +48,10 @@ class Dashboard extends Component {
                         email={this.props.email}
                         updateAuth={this.props.updateAuth}
                     />
-                    <Alerts isAuth={this.props.isAuth} />
+                    <Alerts
+                        isAuth={this.props.isAuth}
+                        username={this.props.username}
+                    />
                 </div>
             </Fragment>
         );

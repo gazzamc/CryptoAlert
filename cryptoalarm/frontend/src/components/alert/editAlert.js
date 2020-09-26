@@ -1,9 +1,10 @@
 import React, { Component, Fragment } from 'react';
 import { Redirect } from 'react-router-dom';
-import { createAlert } from '../../api/auth';
+import { editAlert, getAlert } from '../../api/auth';
 import { callAPI } from '../../api/api';
+import { bool } from 'prop-types';
 
-class CreatAlert extends Component {
+class EditAlert extends Component {
     constructor() {
         super();
         this.state = {
@@ -11,12 +12,16 @@ class CreatAlert extends Component {
             coinOps: [],
             redirect: null,
             status: null,
+            price: null,
+            percent: null,
+            interval: null,
         };
     }
 
     componentDidMount() {
         this.getFiat();
         this.getCoins();
+        this.populateAlert();
     }
 
     getFiat = async () => {
@@ -48,13 +53,79 @@ class CreatAlert extends Component {
         document.getElementById('price-options').toggleAttribute('hidden');
     };
 
-    create = async (e) => {
+    populateAlert = async () => {
+        let token = localStorage.getItem('token');
+        let path = `/api/alert/${this.props.location.query}`;
+
+        console.log(path);
+
+        await getAlert(
+            (res) => {
+                let crypto = res.data.crypto_name;
+                let fiat = res.data.fiat_name;
+                let is_above = res.data.is_above;
+                let type;
+                if (res.data.alert_type_name == 'price') {
+                    type = 1;
+                } else {
+                    type = 2;
+                    this.setOptions();
+                }
+
+                //form options
+                let cryptoOps = document.getElementById(
+                    'FormControlSelectCrypto'
+                );
+                let fiatOps = document.getElementById('FormControlSelectFiat');
+                let alertOps = document.getElementById('FormControlSelectType');
+                let paramOps = document.getElementById(
+                    'FormControlSelectParam'
+                );
+                //set options
+                for (let i = 0; i < cryptoOps.length; i++) {
+                    if (cryptoOps[i].text == crypto) {
+                        cryptoOps[i].selected = true;
+                    }
+                }
+
+                for (let i = 0; i < fiatOps.length; i++) {
+                    if (fiatOps[i].text == fiat) {
+                        fiatOps[i].selected = true;
+                    }
+                }
+
+                for (let i = 0; i < alertOps.length; i++) {
+                    if (alertOps[i].value == type) {
+                        alertOps[i].selected = true;
+                    }
+                }
+
+                for (let i = 0; i < paramOps.length; i++) {
+                    if (paramOps[i].value == is_above.toString()) {
+                        paramOps[i].selected = true;
+                    }
+                }
+
+                //input values
+                this.setState({
+                    price: res.data.price,
+                    percent: res.data.perc_change,
+                    interval: res.data.interval,
+                });
+            },
+            path,
+            token
+        );
+    };
+
+    edit = async (e) => {
         e.preventDefault();
         let is_above;
         let price;
         let perc_change;
         let interval;
 
+        let pk = this.props.location.query;
         let token = localStorage.getItem('token');
         let user_id = localStorage.getItem('user_id');
         let crypto_id = document.getElementById('FormControlSelectCrypto')
@@ -74,6 +145,7 @@ class CreatAlert extends Component {
         }
 
         const body = JSON.stringify({
+            pk,
             user_id,
             crypto_id,
             fiat_id,
@@ -84,10 +156,11 @@ class CreatAlert extends Component {
             interval,
         });
 
-        await createAlert(
+        await editAlert(
             (res) => {
+                console.log(res);
                 this.setState({ status: res.status });
-                if (res.status == 201) {
+                if (res.status == 200) {
                     this.setState({ redirect: '/' });
                 }
                 if (res.status == 400) {
@@ -101,13 +174,24 @@ class CreatAlert extends Component {
                 }
             },
             token,
-            body
+            body,
+            pk
         );
     };
 
     cancel = (e) => {
         e.preventDefault();
         this.setState({ redirect: '/' });
+    };
+
+    setValue = (e) => {
+        if (e.target.id == 'price-input') {
+            this.setState({ price: e.target.value });
+        } else if (e.target.id == 'percentage-interval-input') {
+            this.setState({ interval: e.target.value });
+        } else if (e.target.id == 'percentage-input') {
+            this.setState({ percent: e.target.percent });
+        }
     };
 
     render() {
@@ -135,7 +219,7 @@ class CreatAlert extends Component {
             <Fragment>
                 <div className='col-sm-4 wrapper'>
                     <div className='card exchange col-sm-12 mt-5 p-0'>
-                        <h5 className='card-header'>Create Alert</h5>
+                        <h5 className='card-header'>Edit Alert</h5>
                         <div className='card-body'>
                             <form>
                                 <div className='form-group'>
@@ -196,6 +280,8 @@ class CreatAlert extends Component {
                                         </label>
                                         <div className='col-10'>
                                             <input
+                                                value={this.state.price}
+                                                onChange={this.setValue}
                                                 className='form-control'
                                                 type='number'
                                                 min='1'
@@ -214,6 +300,8 @@ class CreatAlert extends Component {
                                         </label>
                                         <div className='col-10'>
                                             <input
+                                                value={this.state.percent}
+                                                onChange={this.setValue}
                                                 className='form-control'
                                                 type='number'
                                                 min='0'
@@ -231,6 +319,8 @@ class CreatAlert extends Component {
                                         </label>
                                         <div className='col-10'>
                                             <input
+                                                value={this.state.interval}
+                                                onChange={this.setValue}
                                                 className='form-control'
                                                 type='number'
                                                 min='1'
@@ -250,9 +340,9 @@ class CreatAlert extends Component {
                                 <div className='col-sm-12 mt-5 mb-5'></div>
                                 <button
                                     type='submit'
-                                    onClick={this.create}
+                                    onClick={this.edit}
                                     className='btn btn-success mr-2'>
-                                    Create
+                                    Edit
                                 </button>
                                 <button
                                     type='submit'
@@ -269,4 +359,4 @@ class CreatAlert extends Component {
     }
 }
 
-export default CreatAlert;
+export default EditAlert;
