@@ -1,1 +1,1 @@
-web: gunicorn cryptoalarm/cryptoalarm.wsgi --log-file - --log-level debug
+web: gunicorn --pythonpath cryptoalarm cryptoalarm.wsgi --log-file - --log-level debug
