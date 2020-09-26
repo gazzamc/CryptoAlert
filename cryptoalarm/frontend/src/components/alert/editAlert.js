@@ -57,8 +57,6 @@ class EditAlert extends Component {
         let token = localStorage.getItem('token');
         let path = `/api/alert/${this.props.location.query}`;
 
-        console.log(path);
-
         await getAlert(
             (res) => {
                 let crypto = res.data.crypto_name;
@@ -158,7 +156,6 @@ class EditAlert extends Component {
 
         await editAlert(
             (res) => {
-                console.log(res);
                 this.setState({ status: res.status });
                 if (res.status == 200) {
                     this.setState({ redirect: '/' });

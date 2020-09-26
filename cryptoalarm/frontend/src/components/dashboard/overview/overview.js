@@ -6,33 +6,52 @@ class Overview extends Component {
     constructor() {
         super();
         this.state = {
-            chart: {},
+            chartUSD: [],
+            chartEUR: [],
+            chartGBP: [],
             fiat: [],
             crypto: [],
+            labels: [],
             status: null,
         };
     }
 
-    /* getFiatCurrencies = async () => {
+    getFiatCurrencies = async () => {
         let path = '/api/fiat';
 
         await callAPI((res) => {
             let arr = [];
-            res.data.map((currency) => {
-                arr.push({ currency });
-
+            res.data.map((fiat) => {
+                arr.push(fiat.name);
                 this.setState({ fiat: arr });
             });
 
             if (this.state.status === 200) {
             }
         }, path);
-    }; */
+    };
 
-    getFiatCurrencies = async () => {
-        let path = '/api/history';
+    getExcHistory = async (crypto, fiat) => {
+        let now = new Date();
+        let nowISO = now.toISOString('en-GB');
+        let yesterday = new Date(now - 86400 * 1000).toISOString('en-GB');
+        let path = `/api/history/?crypto=${crypto}&fiat=${fiat}&date_time_range_before=${nowISO}&date_time_range_after=${yesterday}`;
         await callAPI((res) => {
-            this.setState({ fiat: res.data });
+            let tempRates = [];
+            let tempLabels = [];
+            res.data.map((history) => {
+                let time = new Date(history.date_added);
+                tempRates.push(history.rate);
+                tempLabels.push(time.toLocaleString(['en-GB']));
+            });
+
+            if (fiat == 'USD') {
+                this.setState({ chartUSD: tempRates, labels: tempLabels });
+            } else if (fiat == 'EUR') {
+                this.setState({ chartEUR: tempRates, labels: tempLabels });
+            } else if (fiat == 'GBP') {
+                this.setState({ chartGBP: tempRates, labels: tempLabels });
+            }
         }, path);
     };
 
@@ -40,28 +59,32 @@ class Overview extends Component {
         this.getFiatCurrencies();
     }
 
+    componentDidUpdate() {
+        if (this.state.chartUSD.length == 0) {
+            for (let i in this.state.fiat) {
+                this.getExcHistory('BTC', this.state.fiat[i]);
+            }
+        }
+    }
+
     render() {
         let data = {
-            labels: ['First', 'Second'],
+            labels: this.state.labels,
             datasets: [
                 {
-                    label: 'My First dataset',
-                    data: [65, 59, 80, 81, 56, 55, 40],
+                    label: 'BTC-USD',
+                    fill: true,
+                    data: this.state.chartUSD,
                 },
                 {
-                    label: 'My Second dataset',
-                    data: [28, 48, 40, 19, 86, 27, 90],
+                    label: 'BTC-EUR',
+                    data: this.state.chartEUR,
+                    hidden: true,
                 },
-            ],
-        };
-
-        const state = {
-            datasets: [
                 {
-                    fill: false,
-                    lineTension: 0.5,
-                    borderWidth: 2,
-                    data: this.state.fiat,
+                    label: 'BTC-GBP',
+                    data: this.state.chartGBP,
+                    hidden: true,
                 },
             ],
         };

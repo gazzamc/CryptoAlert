@@ -71,8 +71,6 @@ class Alerts extends Component {
             id
         );
 
-        console.log(this.state.status);
-
         if (this.state.status == 204) {
             this.setState({ deleted: true });
         }
