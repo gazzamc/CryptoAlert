@@ -2,7 +2,7 @@
 
 Simple cryptocurrency application that monitors the current rates of various fiat currencies. It allows users to create alerts for any changes in price or percentage over time.
 
-This website built using `Django`, `Django REST Framework`, `Python`, `ReactJS` and `Bootstrap`.
+This website is built using `Django`, `Django REST Framework`, `Python`, `ReactJS` and `Bootstrap`.
 
 ## Demo
 

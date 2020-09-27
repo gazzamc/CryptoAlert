@@ -32,13 +32,13 @@ def check_alerts():
                     # determine if price is above or below then
                     # check
                     if alert['is_above']:
-                        if alert['price'] >= exchange['rate']:
+                        if exchange['rate'] > alert['price']:
                             send_email(alert['user_id__email'],
                                        TITLE.format(exchange['crypto_id__name'],
                                                     "Above", "{0:0.2f} {1}".format(alert['price'], alert['fiat_id__name'])),
                                        MESSAGE_PRICE)
                     else:
-                        if alert['price'] <= exchange['rate']:
+                        if exchange['rate'] < alert['price']:
                             send_email(alert['user_id__email'],
                                        TITLE.format(exchange['crypto_id__name'],
                                                     "Below", "{0:0.2f} {1}".format(alert['price'], alert['fiat_id__name'])),
